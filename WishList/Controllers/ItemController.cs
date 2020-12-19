@@ -1,16 +1,21 @@
 ﻿using System.Linq;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using WishList.Data;
+using WishList.Models;
 
 namespace WishList.Controllers
 {
+    [Authorize]
     public class ItemController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public ItemController(ApplicationDbContext context)
+        public ItemController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         public IActionResult Index()
@@ -41,5 +46,6 @@ namespace WishList.Controllers
             _context.SaveChanges();
             return RedirectToAction("Index");
         }
+        private readonly UserManager<ApplicationUser> _userManager;
     }
 }
